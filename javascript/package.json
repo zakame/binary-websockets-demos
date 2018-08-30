@@ -1,0 +1,13 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "WebSockets Demo for JavaScript",
+  "main": "ticks.js",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^6.0.0"
+  },
+  "scripts": {
+    "ticks": "node ticks.js"
+  }
+}
