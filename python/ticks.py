@@ -1,10 +1,7 @@
 import websocket
-try:
-    import thread
-except ImportError:
-    import _thread as thread
 import json
 import time
+from threading import Thread
 
 
 def on_message(ws, msg):
@@ -16,7 +13,7 @@ def on_open(ws):
         ws.send(json.dumps({'ticks': 'R_100'}))
         time.sleep(10)
         ws.close()
-    thread.start_new_thread(run, ())
+    Thread(target=run).start()
 
 
 if __name__ == "__main__":
