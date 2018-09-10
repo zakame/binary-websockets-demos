@@ -3,5 +3,5 @@
 This needs
 [faye-websocket](https://github.com/faye/faye-websocket-ruby):
 
-    $ bundle install
-    $ ruby ticks.rb
+    $ bundle install --path vendor/bundle
+    $ bundle exec ruby ticks.rb
