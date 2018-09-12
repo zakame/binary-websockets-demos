@@ -8,6 +8,10 @@ my $id = $ua->websocket(
     my ($ua, $tx) = @_;
     unless ($tx->is_websocket) {
       say "WebSocket handshake failed!";
+      if (my $err = $tx->error) {
+        say 'Connection error: ', $err->{message};
+      }
+      $tx->closed;
       return;
     }
 
@@ -18,10 +22,10 @@ my $id = $ua->websocket(
       }
     );
 
+    Mojo::IOLoop->timer(10 => sub { $tx->finish });
+
     $tx->send({json => {ticks => 'R_100'}});
   }
 );
-
-Mojo::IOLoop->timer(10 => sub { shift->remove($id) });
 
 Mojo::IOLoop->start;
