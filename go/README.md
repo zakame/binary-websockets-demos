@@ -1,9 +1,7 @@
 # WebSockets demo for Go
 
-This needs
-[golang.org/x/net/websocket](https://godoc.org/golang.org/x/net/websocket):
+This needs Go 1.13 or later for [Go Modules](https://blog.golang.org/using-go-modules).
 
-    $ go get -u golang.org/x/net/websocket
     $ go run ticks.go
 
 Or
