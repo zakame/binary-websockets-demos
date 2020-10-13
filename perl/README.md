@@ -1,7 +1,7 @@
 # WebSockets demo for Perl
 
-This needs [cpanm](https://metacpan.org/pod/App::cpanminus) to install
+This needs [Carton](https://metacpan.org/pod/Carton) to install
 [Mojolicious](https://mojolicious.org):
 
-    $ cpanm -l local --installdeps .
-    $ perl -Ilocal/lib/perl5 ticks.pl
+    $ carton install --deployment
+    $ carton exec perl ticks.pl
