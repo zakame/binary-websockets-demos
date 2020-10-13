@@ -1,31 +1,26 @@
 #!/usr/bin/env perl
-use Mojo::Base -strict;
-use Mojo::UserAgent;    # with Mojo::IOLoop
+use Mojo::Base -strict, -signatures;
+use Mojo::JSON;
+use Mojo::Promise;
+use Mojo::UserAgent;
 
-my $ua = Mojo::UserAgent->new;
-my $id = $ua->websocket(
-  'wss://ws.binaryws.com/websockets/v3?app_id=1089' => sub {
-    my ($ua, $tx) = @_;
-    unless ($tx->is_websocket) {
-      say "WebSocket handshake failed!";
-      if (my $err = $tx->error) {
-        say 'Connection error: ', $err->{message};
+my $url = 'wss://ws.binaryws.com/websockets/v3?app_id=1089';
+
+my $promise = Mojo::Promise->new;
+
+$promise->ioloop->timer(10 => sub { $promise->resolve });
+
+Mojo::UserAgent->new->websocket_p($url)->then(sub ($tx) {
+  $tx->on(
+    message => sub ($tx, $msg) {
+      if (my $error = Mojo::JSON::decode_json($msg)->{error}) {
+        return $promise->reject("API Error: $error->{message}");
       }
-      $tx->closed;
-      return;
+      say "ticks update: $msg";
     }
+  );
 
-    $tx->on(
-      message => sub {
-        my ($tx, $msg) = @_;
-        say "ticks update: ", $msg;
-      }
-    );
+  $tx->send({json => {ticks => 'R_100'}});
 
-    Mojo::IOLoop->timer(10 => sub { $tx->finish });
-
-    $tx->send({json => {ticks => 'R_100'}});
-  }
-);
-
-Mojo::IOLoop->start;
+  $promise;
+})->catch(sub ($err) { say "WebSocket error: $err" })->wait;
