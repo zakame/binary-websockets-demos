@@ -5,7 +5,7 @@
   "main": "ticks.js",
   "license": "MIT",
   "dependencies": {
-    "ws": "^6.0.0"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "ticks": "node ticks.js"
